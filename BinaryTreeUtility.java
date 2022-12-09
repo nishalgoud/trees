@@ -40,6 +40,46 @@ public class BinaryTreeUtility {
         return leftSum + rightSum+root.data;
     }
 
+    //approach 1
+    public static int diameterOfTree(Node root){
+        if(root ==null){
+            return 0;
+        }
+        int leftDiameter = diameterOfTree(root.left);
+        int leftHeight = heightOfBinaryTree(root.left);
+        int rightDiameter = diameterOfTree(root.right);
+        int rightheight = heightOfBinaryTree(root.right);
+
+        int selfDiameter = leftHeight + rightheight +1;
+
+        return Math.max(selfDiameter,Math.max(leftDiameter,rightDiameter));
+    }
+
+    public static class Info {
+        int diameter;
+        int height;
+
+        public Info(int diameter,int height){
+            this.diameter = diameter;
+            this.height = height;
+        }
+    }
+    // O(n)
+    public static Info diameter(Node root){
+        if(root ==null){
+            return new Info(0,0);
+        }
+
+        Info leftInfo = diameter(root.left);
+        Info rightInfo = diameter(root.right);
+
+        int diameter = Math.max(Math.max(leftInfo.diameter,rightInfo.diameter),leftInfo.height+rightInfo.height+1);
+        int height = Math.max(leftInfo.height,rightInfo.height) +1;
+
+        return new Info(diameter, height);
+
+    }
+
     public static void main(String[] args) {
 
         /*
@@ -67,6 +107,8 @@ public class BinaryTreeUtility {
   System.out.println(heightOfBinaryTree(root));
   System.out.println(countOfNodes(root));
   System.out.println(sumOfNodes(root));
+  System.out.println(diameterOfTree(root));
+   System.out.println(diameter(root).diameter);
 
     }
 }
